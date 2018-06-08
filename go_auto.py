@@ -1,16 +1,11 @@
-from movements import *
-from sensors import *
-from modes import *
-import time
-    
-auto()
-#try:
-#    while True:
-#        auto()
-#    
-#except KeyboardInterrupt:
-#    cleanup()
-#    print("\nProgram terminated.")
-#
-#finally:
-#    cleanup()
+from movements import path_clear, cleanup
+
+def autonomous():
+    try:
+        path_clear()
+
+    except KeyboardInterrupt:
+        print("\nProgram Terminated")
+        cleanup()
+
+autonomous()

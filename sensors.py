@@ -24,7 +24,7 @@ io.setup(all_triggers,io.OUT)
 io.setup(all_echoes,io.IN)
 
 def get_distance(trigger, echo):
-    # Activate trigger
+    # Activate trigger.
     io.output(trigger, 1)
     time.sleep(0.00001)
     io.output(trigger, 0)
@@ -32,16 +32,17 @@ def get_distance(trigger, echo):
     start_time = time.time()
     stop_time = time.time()
 
-    # Save start time
+    # Save start time.
     while io.input(echo) == 0:
         start_time = time.time()
 
-    # Save arrival time
+    # Save arrival time.
     while io.input(echo) == 1:
         stop_time = time.time()
 
+    # Convert time to centimeters.
     distance = ((stop_time - start_time) * 34300) / 2
-    return distance
+    return round(distance, 2)
 
     io.cleanup()
 

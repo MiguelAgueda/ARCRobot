@@ -1,3 +1,0 @@
-import modes
-
-modes.auto()

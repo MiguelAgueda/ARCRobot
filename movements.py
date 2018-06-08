@@ -1,15 +1,13 @@
 from time import sleep
 import RPi.GPIO as io
 import checks as chk
-from settings import Settings
-import sensors as sen
 
-stg = Settings()
 io.setmode(io.BCM)
 io.setwarnings(False)
-
+# Left 
 io.setup(2,io.OUT)
 io.setup(3,io.OUT)
+# Right
 io.setup(4,io.OUT)
 io.setup(5,io.OUT)
 
@@ -52,11 +50,11 @@ def left():
 
 def right_15():
     right()
-    sleep(0.001)
+    sleep(0.1)
 
 def left_15():
     left()
-    sleep(0.001)
+    sleep(0.1)
 
 def right_45():
     right()
@@ -84,42 +82,40 @@ def cleanup():
 
 def path_not_clear():
     print("Front is not clear")
-    stop()
-    print("Stopped")
-    sleep(0.1)
     if chk.turn_count():
-        print("chk.turn_count()")
         when_stuck()
 
     else:
-        print("path_not_clear: not turn_count()")
-        chk.sides()
+        pick_a_side()
 
 def path_clear():
     while True:
         if chk.front_3():
+            sleep(0.1)
             print("Front is clear.")
             fwd()
     
         else:
-            pick_a_side()
+            path_not_clear()
 
 def when_stuck():
-    print("Seemingly stuck. Assessing surroundings.")
-    if sen.dist_3() > stg.safe_front_dist:
-        print("Best option: Forward.")
-        fwd()
-        sleep(0.1)
+    print("Seemingly stuck.")
+    if chk.sides == 'left':
+        left_45()
+        stop()
+        sleep(0.2)
 
     else:
-        print("\nContinuing.\n")
-        stg.turn_count = 0
+        right_45()
+        stop()
+        sleep(0.2)
 
 def pick_a_side():
+    stop()
+    sleep(0.5)
     side = chk.sides()
 
     if side == "back":
-        stop()
         turn_180()
 
     elif side == "left":
@@ -129,7 +125,6 @@ def pick_a_side():
         right_15()
 
     else:
-        stop()
         bwd()
         sleep(0.2)
 
