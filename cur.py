@@ -15,4 +15,6 @@ while key != ord('q'):
         stdscr.addstr(2, 20, "Up")
     elif key == curses.KEY_DOWN: 
         stdscr.addstr(3, 20, "Down")
+    elif key == ord('w'):
+        stdscr.addstr(4, 20, "W")
 curses.endwin()
